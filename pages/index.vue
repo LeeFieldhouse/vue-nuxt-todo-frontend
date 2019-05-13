@@ -23,18 +23,19 @@
       ></v-text-field>
       <v-btn type="submit" v-if="!openDate" color="success">SUBMIT</v-btn>
     </form>
-
-    <div class="card" v-for="inf in info" :key="inf.title">
-      <div class="card-heading">
-        <div class="card-title">
-          <h4 >{{inf.title}}</h4>
-        </div>
-        <div class="card-icons">
-          <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
-          <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
+    <v-hover v-for="inf in info" :key="inf.title">
+      <div  class="card" :class="`elevation-${hover ? 12 : 2}`" slot-scope="{hover}" >
+        <div class="card-heading">
+          <div class="card-title">
+            <h4 >{{inf.title}}</h4>
+          </div>
+          <div class="card-icons">
+            <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
+            <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
+          </div>
         </div>
       </div>
-    </div>
+    </v-hover>
 
 
   </div>
@@ -205,6 +206,11 @@ export default {
 
   .card-icons i {
     cursor: pointer;
+  }
+
+  .elevation-12 {
+    background-color: #606060;
+    opacity: 50%;
   }
   /* end task card */
 
