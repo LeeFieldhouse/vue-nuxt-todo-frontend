@@ -142,6 +142,7 @@ export default {
     flex-direction: column;
   }
 
+  /* start add task */
   .task-form{
     width: 100%;
     max-width: 100%;
@@ -171,13 +172,13 @@ export default {
   .add-task-input{
     width: 80%;
   }
-
+  /* end add task */
 
   /* start task card */
   .card{
     width: 100%;
     height: 15rem;
-    border: 0.1rem solid #F1C40F;
+    border: 0.05rem solid #F1C40F;
     border-radius: 1%;
     margin-bottom: 1rem;
   }
@@ -185,7 +186,7 @@ export default {
   .card-heading {
     width: 100%;
     max-height: 100%;
-    border-bottom: 0.1rem solid #f1c40f;
+    border-bottom: 0.05rem solid #f1c40f;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -214,6 +215,7 @@ export default {
   .background-12 {
     background-color: #404040;
     opacity: 50%;
+    border: 1px solid #fdce0f
   }
   /* end task card */
 
