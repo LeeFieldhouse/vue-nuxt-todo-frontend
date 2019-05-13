@@ -2,6 +2,7 @@
   <div id="app">
 
   <div class="wrapper">
+    <!-- start add task -->
     <form @submit.prevent="submitForm()" class="task-form">
       <div class="task-form-top">
       <v-text-field
@@ -23,8 +24,10 @@
       ></v-text-field>
       <v-btn type="submit" v-if="!openDate" color="success">SUBMIT</v-btn>
     </form>
+    <!-- end add task -->
+
     <v-hover v-for="inf in info" :key="inf.title">
-      <div  class="card" :class="`elevation-${hover ? 12 : 2}`" slot-scope="{hover}" >
+      <div  class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
         <div class="card-heading">
           <div class="card-title">
             <h4 >{{inf.title}}</h4>
@@ -208,8 +211,8 @@ export default {
     cursor: pointer;
   }
 
-  .elevation-12 {
-    background-color: #606060;
+  .background-12 {
+    background-color: #404040;
     opacity: 50%;
   }
   /* end task card */
