@@ -23,23 +23,59 @@
         v-model="data.description"
       ></v-text-field>
       <v-btn type="submit" v-if="!openDate" color="success">SUBMIT</v-btn>
+      <div class="close-form"><v-icon >clear</v-icon></div>
     </form>
     <!-- end add task -->
 
-    <v-hover v-for="inf in info" :key="inf.title">
-      <div  class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
-        <div class="card-heading">
-          <div class="card-title">
-            <h4 >{{inf.title}}</h4>
+    <!-- start nav -->
+    <div class="nav">
+      <div @click.prevent="showTodo = true" class="nav-todo" :class="`${showTodo ? 'active' : ''} `">Todo</div>
+      <div @click.prevent="showTodo = false" class="nav-complete" :class="`${!showTodo ? 'active' : ''} `">Complete</div>
+    </div>
+    <br>
+    <!-- end nav -->
+
+    <!-- start show task -->
+    <div v-if="showTodo" class="todo">
+      <v-hover v-for="inf in info" :key="inf.title">
+        <div v-if="!inf.completed"  class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
+          <div class="card-heading">
+            <div class="card-title">
+              <h4 >{{inf.title}}</h4>
+            </div>
+            <div class="card-icons">
+              <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
+              <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
+            </div>
           </div>
-          <div class="card-icons">
-            <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
-            <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
+          <div class="card-description">
+            {{inf.description}}
           </div>
         </div>
-      </div>
-    </v-hover>
+      </v-hover>
+    </div>
+    <!-- end show task -->
 
+    <!-- start show completed task -->
+    <div class="complete" v-if="!showTodo">
+      <v-hover v-for="inf in info" :key="inf.title">
+        <div v-if="inf.completed" class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
+          <div class="card-heading">
+            <div class="card-title">
+              <h4 >{{inf.title}}</h4>
+            </div>
+            <div class="card-icons">
+              <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
+              <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
+            </div>
+          </div>
+          <div class="card-description">
+            {{inf.description}}
+          </div>
+        </div>
+      </v-hover>
+    </div>
+    <!-- end show completed task -->
 
   </div>
 </div>
@@ -55,6 +91,7 @@ export default {
     return {
       info: [],
       openDate: false,
+      showTodo: true,
 
       data: {
         title: null,
@@ -133,6 +170,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: center;
+
   }
 
   .wrapper{
@@ -142,16 +180,55 @@ export default {
     flex-direction: column;
   }
 
+
+  .nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-todo{
+    width: 50%;
+    cursor: pointer;
+  }
+
+  .nav-complete {
+    width: 50%;
+    cursor: pointer;
+  }
+
+  .active {
+    border-bottom: #F1C40F 1px solid;
+  }
+
+
   /* start add task */
   .task-form{
-    width: 100%;
     max-width: 100%;
+    max-height: 100%;
     background: #303030;
     border: 0.1rem solid #f1c40f;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .close-form {
+    position: absolute;
+    right: -1.5rem;
+    top: -1rem;
+    background: black;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
   }
 
   .task-form-top {
@@ -177,7 +254,8 @@ export default {
   /* start task card */
   .card{
     width: 100%;
-    height: 15rem;
+    min-height: 3rem;
+    max-height: 100%;
     border: 0.05rem solid #F1C40F;
     border-radius: 1%;
     margin-bottom: 1rem;
@@ -216,6 +294,10 @@ export default {
     background-color: #404040;
     opacity: 50%;
     border: 1px solid #fdce0f
+  }
+
+  .card-description {
+    padding: 0 1rem;
   }
   /* end task card */
 
