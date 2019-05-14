@@ -2,7 +2,7 @@
 
 
     <form @submit.prevent="submitForm()" class="task-form" :class="`${openForm ? '' : 'task-form-closed'}`">
-      <div v-if="openForm" class="task-form-top">
+      <div class="task-form-top">
       <div class="task-form-top">
       <v-text-field
         name="title"
@@ -23,7 +23,11 @@
       ></v-text-field>
       <v-btn type="submit" v-if="!openDate" color="success">SUBMIT</v-btn>
       </div>
-      <div @click.prevent="openForm = !openForm" class="close-form"><v-icon >clear</v-icon></div>
+      <div @click.prevent="openForm = !openForm" class="close-form">
+        <v-icon v-if="openForm" >clear</v-icon>
+        <v-icon v-else >add</v-icon>
+
+        </div>
     </form>
 </template>
 
@@ -80,16 +84,21 @@ export default {
     align-items: center;
     margin-bottom: 1rem;
     position: relative;
-    transition: all 3s;
+    transition: all 1s;
+
   }
 
   .task-form-closed {
 
     max-height: 0%;
     max-width: 0%;
+    transition: all 1s;
 
-    position: relative;
+  }
 
+  .task-form-closed .task-form-top{
+    overflow: hidden;
+    visibility: hidden;
   }
 
   .close-form {
