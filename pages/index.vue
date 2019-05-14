@@ -3,34 +3,18 @@
 
   <div class="wrapper">
     <!-- start add task -->
-    <form @submit.prevent="submitForm()" class="task-form">
-      <div class="task-form-top">
-      <v-text-field
-        name="title"
-        label="Title"
-        class="add-task-top"
-        v-model="data.title"
-      ></v-text-field>
-      <v-spacer></v-spacer>
-      <v-btn class="date-button" @click.prevent="openDate = !openDate">Due By: {{data.date}}</v-btn>
-      </div>
-    <v-date-picker v-if="openDate" v-model="data.date" :landscape="true" :reactive="true"></v-date-picker>
-      <v-text-field
-        name="date"
-        label="Description"
-        id="id"
-        class="add-task-input"
-        v-model="data.description"
-      ></v-text-field>
-      <v-btn type="submit" v-if="!openDate" color="success">SUBMIT</v-btn>
-      <div class="close-form"><v-icon >clear</v-icon></div>
-    </form>
+    <addTask />
     <!-- end add task -->
 
     <!-- start nav -->
     <div class="nav">
-      <div @click.prevent="showTodo = true" class="nav-todo" :class="`${showTodo ? 'active' : ''} `">Todo</div>
-      <div @click.prevent="showTodo = false" class="nav-complete" :class="`${!showTodo ? 'active' : ''} `">Complete</div>
+      <div class="border-bottom-1" :class="`${showTodo ? 'active' : 'active-2'} `"></div>
+      <div @click.prevent="showTodo = true" class="nav-todo" >
+        Todo
+      </div>
+      <div @click.prevent="showTodo = false" class="nav-complete" >
+        Complete
+        </div>
     </div>
     <br>
     <!-- end nav -->
@@ -38,13 +22,13 @@
     <!-- start show task -->
     <div v-if="showTodo" class="todo">
       <v-hover v-for="inf in info" :key="inf.title">
-        <div v-if="!inf.completed"  class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
+        <div v-if="!inf.complete"  class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
           <div class="card-heading">
             <div class="card-title">
-              <h4 >{{inf.title}}</h4>
+              <h4 >{{inf.title}} Due: {{inf.due_by}}</h4>
             </div>
             <div class="card-icons">
-              <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
+              <v-icon @click="markComplete(`${inf.id}`)">check</v-icon>
               <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
             </div>
           </div>
@@ -59,13 +43,13 @@
     <!-- start show completed task -->
     <div class="complete" v-if="!showTodo">
       <v-hover v-for="inf in info" :key="inf.title">
-        <div v-if="inf.completed" class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
+        <div v-if="inf.complete" class="card" :class="`background-${hover ? 12 : 2}`" slot-scope="{hover}" >
           <div class="card-heading">
             <div class="card-title">
-              <h4 >{{inf.title}}</h4>
+              <h4 >{{inf.title}} </h4>
             </div>
             <div class="card-icons">
-              <v-icon @click.prevent="edit(`${inf.id}`)">edit</v-icon>
+              <v-icon @click="markNotComplete(`${inf.id}`)">clear</v-icon>
               <v-icon @click.prevent="deleteTask(`${inf.id}`)">delete</v-icon>
             </div>
           </div>
@@ -84,46 +68,59 @@
 
 <script>
 
-
 import axios from 'axios'
+import addTask from '@/components/addTask.vue'
 export default {
+  components: {
+    addTask
+  },
   data () {
     return {
       info: [],
-      openDate: false,
       showTodo: true,
-
-      data: {
-        title: null,
-        description: null,
-        date: null
-      },
     }
   },
   methods: {
-    submitForm() {
-      // Submit todo
-      axios.post('http://todoback.test/api', {
-        title: this.data.title,
-        description: this.data.description,
-        date: this.data.date
-      }).then((dat)=>{
-        let info = axios.get('http://todoback.test/api').then(data => {
-          this.info = data.data
-          console.log(data)
-        })
-
-      }).catch(e => {
-        console.log(e);
-      })
-    },
-    // end submit todo
 
     // start edit todo
     edit(id){
       console.log(id)
     },
     // end edit todo
+
+    // start mark completed
+    markComplete(id){
+      axios.post('http://todoback.test/api/mark-complete', {
+        id: id
+      }).then(data => {
+        this.info.forEach(i => {
+          if(i.id == id){
+            i.complete = true
+          }
+        })
+      }).catch(e => {
+        console.log(e);
+      })
+    },
+    // end mark completed
+
+    // start mark not complete
+    markNotComplete(id){
+      axios.post('http://todoback.test/api/mark-notcomplete', {
+        id: id
+      }).then( data => {
+        console.log(data.data)
+        this.info.forEach(i => {
+          if(i.id == id){
+            i.complete = false
+          }
+        })
+      })
+    },
+
+    // end mark not complete
+
+
 
     // start delete todo
     deleteTask(id){
@@ -163,6 +160,10 @@ export default {
     .date-button{
       width: 100%;
     }
+
+    .wrapper {
+      width: 90%!important;
+    }
   }
 
 
@@ -186,70 +187,44 @@ export default {
     flex-direction: row;
     width: 100%;
     text-align: center;
+    position: relative;
   }
 
   .nav-todo{
     width: 50%;
     cursor: pointer;
+
   }
+
+  .border-bottom-1{
+    height: 0rem;
+    bottom: -0.5rem;
+    width: 50%;
+    left: 0;
+    position: absolute;
+    border:#F1C40F 1px solid;
+    transition: all 2s;
+  }
+
+  .active {
+    display: block;
+   width: 50%;
+   transition: all 2s;
+   border:#F1C40F 1px solid;
+
+  }
+
+  .active-2 {
+    left: 50%;
+    transition: all 2s;
+  }
+
 
   .nav-complete {
     width: 50%;
     cursor: pointer;
   }
 
-  .active {
-    border-bottom: #F1C40F 1px solid;
-  }
-
-
-  /* start add task */
-  .task-form{
-    max-width: 100%;
-    max-height: 100%;
-    background: #303030;
-    border: 0.1rem solid #f1c40f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .close-form {
-    position: absolute;
-    right: -1.5rem;
-    top: -1rem;
-    background: black;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-
-  .task-form-top {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    align-items: center;
-    flex-wrap: wrap;
-
-  }
-
-  .add-task-top{
-    max-width: 100%;
-  }
-
-
-
-  .add-task-input{
-    width: 80%;
-  }
-  /* end add task */
 
   /* start task card */
   .card{
