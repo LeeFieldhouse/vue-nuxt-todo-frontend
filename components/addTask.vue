@@ -54,12 +54,12 @@ export default {
 
     submitForm() {
       // Submit todo
-      axios.post('http://leefieldhouse.com/api', {
+      axios.post('http://todoback.test/api', {
         title: this.data.title,
         description: this.data.description,
         date: this.data.date
       }).then((dat)=>{
-        let info = axios.get('http://todoback.test/api').then(data => {
+        let info = axios.get('http://leefieldhouse.com/api').then(data => {
           this.$parent.info = data.data
           console.log(data)
         })
