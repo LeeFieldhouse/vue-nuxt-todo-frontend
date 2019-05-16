@@ -54,7 +54,7 @@ export default {
 
     submitForm() {
       // Submit todo
-      axios.post('http://todoback.test/api', {
+      axios.post('http://leefieldhouse.com/api', {
         title: this.data.title,
         description: this.data.description,
         date: this.data.date
