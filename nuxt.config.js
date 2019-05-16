@@ -56,7 +56,7 @@ export default {
   ** Axios module configuration
   */
   axios: {
-    baseUrl: 'http://todoback.test'
+    baseUrl: 'http://leefieldhouse.com'
   },
 
   /*
