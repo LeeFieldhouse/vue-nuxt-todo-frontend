@@ -56,7 +56,7 @@ export default {
   ** Axios module configuration
   */
   axios: {
-    baseUrl: '',
+    baseUrl: 'http://leefieldhouse.com/api',
        proxyHeaders: false,
    credentials: false
   },
