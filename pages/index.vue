@@ -90,7 +90,7 @@ export default {
 
     // start mark completed
     markComplete(id){
-      axios.post('http://leefieldhouse.com/api/mark-complete', {
+      axios.post('http://todoback.test/api/mark-complete', {
         id: id
       }).then(data => {
         this.info.forEach(i => {
@@ -106,7 +106,7 @@ export default {
 
     // start mark not complete
     markNotComplete(id){
-      axios.post('http://leefieldhouse.com/api/mark-notcomplete', {
+      axios.post('http://todoback.test/api/mark-notcomplete', {
         id: id
       }).then( data => {
         console.log(data.data)
@@ -124,7 +124,7 @@ export default {
 
     // start delete todo
     deleteTask(id){
-      axios.delete('http://leefieldhouse.com/api', {
+      axios.delete('http://todoback.test/api', {
         params: {
           id: id
         }
