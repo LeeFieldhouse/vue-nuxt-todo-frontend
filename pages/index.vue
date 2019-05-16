@@ -138,7 +138,7 @@ export default {
     // end delete todo
   },
     mounted () {
-      axios.get('http://leefieldhouse.com/api').then(todo=>{
+      axios.get('http://todoback.test/api').then(todo=>{
       this.info = todo.data
     }).catch(e => {
       console.log(e)
