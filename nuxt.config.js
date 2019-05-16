@@ -56,7 +56,9 @@ export default {
   ** Axios module configuration
   */
   axios: {
-    baseUrl: ''
+    baseUrl: '',
+       proxyHeaders: false,
+   credentials: false
   },
 
   /*
