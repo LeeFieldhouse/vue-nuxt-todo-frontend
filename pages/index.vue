@@ -124,7 +124,7 @@ export default {
 
     // start delete todo
     deleteTask(id){
-      axios.delete('http://todoback.test/api', {
+      axios.delete('http://leefieldhouse.com/api', {
         params: {
           id: id
         }
@@ -138,7 +138,7 @@ export default {
     // end delete todo
   },
     mounted () {
-      axios.get('http://todoback.test/api').then(todo=>{
+      axios.get('http://leefieldhouse.com/api').then(todo=>{
       this.info = todo.data
     }).catch(e => {
       console.log(e)
